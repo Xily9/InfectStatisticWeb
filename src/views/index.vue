@@ -3,77 +3,34 @@
     <img :src="img" alt="top" id="top_img" />
     <div class="row">
       <div class="name">全国疫情</div>
-      <div class="update_time">数据更新至{{number.updateTime | dateString}}</div>
       <vue-datepicker-local v-model="time"></vue-datepicker-local>
     </div>
     <div class="number_container">
       <div class="number_block">
         <div class="number" style="color:#FF6A57">{{number.currentConfirmedCount}}</div>
         <div class="title">现有确诊</div>
-        <div class="increase_block">
-          昨日
-          <div
-            class="increase"
-            style="color:#FF6A57"
-          >{{number.currentConfirmedIncr>0?"+"+number.currentConfirmedIncr:number.currentConfirmedIncr}}</div>
-        </div>
       </div>
       <div class="number_block">
         <div class="number" style="color:#EC9217">{{number.suspectedCount}}</div>
         <div class="title">现有疑似</div>
-        <div class="increase_block">
-          昨日
-          <div
-            class="increase"
-            style="color:#EC9217"
-          >{{number.suspectedIncr>0?"+"+number.suspectedIncr:number.suspectedIncr}}</div>
-        </div>
       </div>
       <div class="number_block">
         <div class="number" style="color:#476DA0">{{number.seriousCount}}</div>
         <div class="title">现有重症</div>
-        <div class="increase_block">
-          昨日
-          <div
-            class="increase"
-            style="color:#476DA0"
-          >{{number.seriousIncr>0?"+"+number.seriousIncr:number.seriousIncr}}</div>
-        </div>
       </div>
     </div>
     <div class="number_container">
       <div class="number_block">
         <div class="number" style="color:#E83132">{{number.confirmedCount}}</div>
         <div class="title">累计确诊</div>
-        <div class="increase_block">
-          昨日
-          <div
-            class="increase"
-            style="color:#E83132"
-          >{{number.confirmedIncr>0?"+"+number.confirmedIncr:number.confirmedIncr}}</div>
-        </div>
       </div>
       <div class="number_block">
         <div class="number" style="color:#10AEB5">{{number.curedCount}}</div>
         <div class="title">累计治愈</div>
-        <div class="increase_block">
-          较昨日
-          <div
-            class="increase"
-            style="color:#10AEB5"
-          >{{number.curedIncr>0?"+"+number.curedIncr:number.curedIncr}}</div>
-        </div>
       </div>
       <div class="number_block">
         <div class="number" style="color:#4E5054">{{number.deadCount}}</div>
         <div class="title">累计死亡</div>
-        <div class="increase_block">
-          较昨日
-          <div
-            class="increase"
-            style="color:#4E5054"
-          >{{number.deadIncr>0?"+"+number.deadIncr:number.deadIncr}}</div>
-        </div>
       </div>
     </div>
     <v-chart :options="map" @click="handleClick" class="chart" />
@@ -105,13 +62,6 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-}
-.row .update_time {
-  margin-left: 10px;
-  color: #aaa;
-  font-size: 12px;
-  display: flex;
-  flex: 1;
 }
 .number_container {
   padding: 10px;
