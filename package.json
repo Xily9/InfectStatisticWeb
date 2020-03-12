@@ -12,6 +12,7 @@
     "echarts": "^4.6.0",
     "layui-laydate": "^5.0.9",
     "vue": "^2.6.11",
+    "vue-datepicker-local": "^1.0.19",
     "vue-echarts": "^5.0.0-beta.0",
     "vue-router": "^3.1.6"
   },
