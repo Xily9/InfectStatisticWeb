@@ -24,6 +24,21 @@
         <div class="title">累计死亡</div>
       </div>
     </div>
+    <v-chart :options="line" class="chart" />
+    <div class="buttons_container">
+      <div class="button" @click="confirmed">
+        累计
+        <br />确诊趋势
+      </div>
+      <div class="button" @click="cured">
+        累计
+        <br />治愈趋势
+      </div>
+      <div class="button" @click="dead">
+        累计
+        <br />死亡趋势
+      </div>
+    </div>
   </div>
 </template>
 <style>
