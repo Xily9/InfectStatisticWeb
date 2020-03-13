@@ -98,5 +98,73 @@
 }
 </style>
 <script>
-
+import ECharts from "vue-echarts";
+import VueDatepickerLocal from "vue-datepicker-local";
+import logData from "../config/logData";
+export default {
+  components: {
+    "v-chart": ECharts,
+    VueDatepickerLocal
+  },
+  methods: {
+    handleClick(params) {
+      this.$router.push({
+        path: "/detail/" + params.data.name
+      });
+    },
+    loadData() {
+      this.analyzeData();
+    },
+    analyzeData() {
+      if (this.time - new Date(2020, 1, 1) > 0)
+        this.time = new Date(2020, 1, 1);
+      var Y = this.time.getFullYear();
+      var M =
+        this.time.getMonth() + 1 < 10
+          ? "0" + (this.time.getMonth() + 1)
+          : this.time.getMonth() + 1;
+      var D =
+        this.time.getDate() < 10
+          ? "0" + this.time.getDate()
+          : this.time.getDate();
+      let data = logData["aggregate"][Y + "-" + M + "-" + D];
+      let aggregate = data["全国"];
+      let augment = data["全国"];
+      this.number.currentConfirmedCount = aggregate["infected"];
+      this.number.confirmedCount = augment["infected"];
+      this.number.suspectedCount = aggregate["suspect"];
+      this.number.curedCount = aggregate["cure"];
+      this.number.deadCount = aggregate["death"];
+    }
+  },
+  mounted() {
+    window.onresize = () => {
+      if (this.chart) {
+        this.chart.resize();
+      }
+    };
+    this.loadData();
+  },
+  watch: {
+    time: function() {
+      this.analyzeData();
+    }
+  },
+  data() {
+    return {
+      time: new Date(),
+      img: require("../assets/img/u0.png"),
+      calendar: require("../assets/img/calendar.png"),
+      number: {
+        updateTime: 0,
+        currentConfirmedCount: 0,
+        confirmedCount: 0,
+        suspectedCount: 0,
+        curedCount: 0,
+        deadCount: 0,
+        seriousCount: 0
+      }
+    };
+  }
+};
 </script>
