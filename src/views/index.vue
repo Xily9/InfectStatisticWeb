@@ -100,7 +100,15 @@
 <script>
 import ECharts from "vue-echarts";
 import VueDatepickerLocal from "vue-datepicker-local";
+import "echarts/lib/chart/map";
+import "echarts/lib/component/tooltip";
+import "echarts/lib/component/geo";
+import "echarts/lib/component/toolbox";
+import "echarts/lib/component/visualMap";
+import "echarts/lib/component/dataset";
+import chinaMap from "../assets/china.json";
 import logData from "../config/logData";
+ECharts.registerMap("China", chinaMap);
 export default {
   components: {
     "v-chart": ECharts,
@@ -135,6 +143,11 @@ export default {
       this.number.suspectedCount = aggregate["suspect"];
       this.number.curedCount = aggregate["cure"];
       this.number.deadCount = aggregate["death"];
+      let arr=[];
+      for (var key in data) {
+        arr.push({ name: key, value: data[key]["infected"] });
+      }
+      this.map.series[0].data=arr;
     }
   },
   mounted() {
@@ -163,6 +176,61 @@ export default {
         curedCount: 0,
         deadCount: 0,
         seriousCount: 0
+      },
+      map: {
+        tooltip: {
+          trigger: "item",
+          formatter: "地区：{b}<br/>确诊：{c}"
+        },
+        visualMap: {
+          type: "piecewise",
+          itemSymbol: "rect",
+          minOpen: true,
+          pieces: [
+            {
+              gte: 10000,
+              color: "#660208"
+            },
+            {
+              gte: 1000,
+              lte: 9999,
+              color: "#8c0d0d"
+            },
+            {
+              gte: 100,
+              lte: 999,
+              color: "#CC2929"
+            },
+            {
+              gte: 10,
+              lte: 99,
+              color: "#ff7b69"
+            },
+            {
+              gte: 1,
+              lte: 9,
+              color: "#ffaa85"
+            },
+            {
+              value: 0,
+              color: "#ffffff"
+            }
+          ],
+          showLabel: true
+        },
+        series: [
+          {
+            type: "map",
+            mapType: "China",
+            zoom: 1.2,
+            label: {
+              show: true,
+              fontSize: 6
+            },
+            data: [],
+            clickable: true
+          }
+        ]
       }
     };
   }
