@@ -26,15 +26,15 @@
     </div>
     <v-chart :options="line" class="chart" />
     <div class="buttons_container">
-      <div class="button" @click="confirmed">
+      <div class="button" :class="type=='infected'?'checked':''" @click="confirmed">
         累计
         <br />确诊趋势
       </div>
-      <div class="button" @click="cured">
+      <div class="button" :class="type=='cure'?'checked':''" @click="cured">
         累计
         <br />治愈趋势
       </div>
-      <div class="button" @click="dead">
+      <div class="button" :class="type=='death'?'checked':''" @click="dead">
         累计
         <br />死亡趋势
       </div>
@@ -122,18 +122,22 @@
   flex: 1;
   width: 100%;
 }
-.button {
+.buttons_container .button {
   width: 100%;
   display: flex;
-  background: #00bec7;
+  background: #f5f6f7;
   border-radius: 5px;
   margin: 5px;
   justify-content: center;
   align-items: center;
   padding: 10px;
   text-align: center;
-  color: #fff;
+  color: #707070;
   font-size: 10px;
+}
+.buttons_container .checked {
+  background: #00bec7;
+  color: #fff;
 }
 </style>
 <script>
