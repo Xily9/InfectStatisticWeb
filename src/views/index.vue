@@ -150,6 +150,8 @@ export default {
     analyzeData() {
       if (this.time - new Date(2020, 1, 1) > 0)
         this.time = new Date(2020, 1, 1);
+      if (new Date(2020, 0, 19) - this.time > 0)
+        this.time = new Date(2020, 0, 19);
       var Y = this.time.getFullYear();
       var M =
         this.time.getMonth() + 1 < 10
@@ -170,6 +172,8 @@ export default {
     drawMap() {
       if (this.time - new Date(2020, 1, 1) > 0)
         this.time = new Date(2020, 1, 1);
+      if (new Date(2020, 0, 19) - this.time > 0)
+        this.time = new Date(2020, 0, 19);
       var Y = this.time.getFullYear();
       var M =
         this.time.getMonth() + 1 < 10
