@@ -33,9 +33,9 @@
         <div class="title">累计死亡</div>
       </div>
     </div>
-    <div class="switch_buttons">
-      <div class="button" :class="!isTotal?'checked':''" @click="change(false)">现有确诊</div>
-      <div class="button" :class="isTotal?'checked':''" @click="change(true)">累计确诊</div>
+    <div class="index_switch_buttons">
+      <div class="index_button" :class="!isTotal?'checked':''" @click="change(false)">现有确诊</div>
+      <div class="index_button" :class="isTotal?'checked':''" @click="change(true)">累计确诊</div>
     </div>
     <v-chart :options="map" @click="handleClick" class="chart" />
   </div>
@@ -100,7 +100,7 @@
 .number_block .increase_block .increase {
   color: #f00;
 }
-.switch_buttons {
+.index_switch_buttons {
   width: 100%;
   display: flex;
   border-radius: 10px;
@@ -108,14 +108,14 @@
   margin: 16px;
   flex-direction: row;
 }
-.switch_buttons .button {
+.index_switch_buttons .index_button {
   flex: 1;
   padding: 12px;
   border-radius: 10px;
   font-size: 16px;
   text-align: center;
 }
-.switch_buttons .checked {
+.index_switch_buttons .checked {
   background: #efefef;
   font-weight: bold;
 }
