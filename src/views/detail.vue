@@ -267,6 +267,21 @@ export default {
       this.line.series[0].data = values;
       this.line.title.text =
         this.$route.params.province + " " + this.title + "趋势";
+    },
+    confirmed() {
+      this.type = "infected";
+      this.title = "累计确诊";
+      this.drawLine();
+    },
+    cured() {
+      this.type = "cure";
+      this.title = "累计治愈";
+      this.drawLine();
+    },
+    dead() {
+      this.type = "death";
+      this.title = "累计死亡";
+      this.drawLine();
     }
   },
   mounted() {
