@@ -26,15 +26,15 @@
     </div>
     <v-chart :options="line" class="chart" />
     <div class="buttons_container">
-      <div class="button" :class="type=='infected'?'checked':''" @click="confirmed">
+      <div class="button" :class="type=='infected'?'checked':''" @click="change('infected','累计确诊')">
         累计
         <br />确诊趋势
       </div>
-      <div class="button" :class="type=='cure'?'checked':''" @click="cured">
+      <div class="button" :class="type=='cure'?'checked':''" @click="change('cure','累计治愈')">
         累计
         <br />治愈趋势
       </div>
-      <div class="button" :class="type=='death'?'checked':''" @click="dead">
+      <div class="button" :class="type=='death'?'checked':''" @click="change('death','累计死亡')">
         累计
         <br />死亡趋势
       </div>
@@ -236,13 +236,12 @@ export default {
         this.time.getDate() < 10
           ? "0" + this.time.getDate()
           : this.time.getDate();
-      let data = logData["aggregate"][Y + "-" + M + "-" + D];
-      let aggregate = data[this.$route.params.province];
-      let augment = data[this.$route.params.province];
+      let aggregate = logData["aggregate"][Y + "-" + M + "-" + D][this.$route.params.province];
+      let augment = logData["augment"][Y + "-" + M + "-" + D][this.$route.params.province];
       if (aggregate != null) {
-        this.number.currentConfirmedCount = aggregate["infected"];
-        this.number.confirmedCount = augment["infected"];
-        this.number.suspectedCount = aggregate["suspect"];
+        this.number.currentConfirmedCount = augment["infected"];
+        this.number.confirmedCount = aggregate["infected"];
+        this.number.suspectedCount = augment["suspect"];
         this.number.curedCount = aggregate["cure"];
         this.number.deadCount = aggregate["death"];
       } else {
@@ -272,19 +271,9 @@ export default {
       this.line.title.text =
         this.$route.params.province + " " + this.title + "趋势";
     },
-    confirmed() {
-      this.type = "infected";
-      this.title = "累计确诊";
-      this.drawLine();
-    },
-    cured() {
-      this.type = "cure";
-      this.title = "累计治愈";
-      this.drawLine();
-    },
-    dead() {
-      this.type = "death";
-      this.title = "累计死亡";
+    change(type, title) {
+      this.type = type;
+      this.title = title;
       this.drawLine();
     }
   },
