@@ -177,7 +177,10 @@ export default {
         legend: {
           data: ["数值"]
         },
-        tooltip: {},
+        tooltip: {
+          trigger: "axis",
+          formatter: "日期：{b}<br/>人数：{c}"
+        },
         calculable: true,
         xAxis: [
           {
