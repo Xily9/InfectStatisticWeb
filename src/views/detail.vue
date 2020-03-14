@@ -165,12 +165,55 @@ export default {
         suspectedCount: 0,
         curedCount: 0,
         deadCount: 0
+      },
+      line: {
+        title: {
+          text: ""
+        },
+        legend: {
+          data: ["数值"]
+        },
+        tooltip: {},
+        calculable: true,
+        xAxis: [
+          {
+            axisLine: {
+              lineStyle: {
+                color: "#CECECE"
+              }
+            },
+            type: "category",
+            boundaryGap: false,
+            data: []
+          }
+        ],
+        yAxis: [
+          {
+            type: "value",
+            axisLine: {
+              lineStyle: {
+                color: "#CECECE"
+              }
+            }
+          }
+        ],
+        series: [
+          {
+            name: "数值",
+            type: "line",
+            symbol: "none",
+            smooth: 0.2,
+            color: ["#66AEDE"],
+            data: []
+          }
+        ]
       }
     };
   },
   methods: {
     loadData() {
       this.analyzeData();
+      this.drawLine();
     },
     back() {
       this.$router.back();
@@ -205,6 +248,25 @@ export default {
         this.number.curedCount = 0;
         this.number.deadCount = 0;
       }
+    },
+    drawLine() {
+      let keys = [];
+      let values = [];
+      for (var key in logData["aggregate"]) {
+        let date = key.substring(5, 10);
+        keys.push(date);
+        let tmp = logData["aggregate"][key];
+        if (this.$route.params.province in tmp) {
+          let value = tmp[this.$route.params.province][this.type];
+          values.push(value);
+        } else {
+          values.push(0);
+        }
+      }
+      this.line.xAxis[0].data = keys;
+      this.line.series[0].data = values;
+      this.line.title.text =
+        this.$route.params.province + " " + this.title + "趋势";
     }
   },
   mounted() {
@@ -214,6 +276,22 @@ export default {
       }
     };
     this.loadData();
+  },
+  filters: {
+    dateString(value) {
+      var date = new Date(value);
+      var Y = date.getFullYear() + "-";
+      var M =
+        (date.getMonth() + 1 < 10
+          ? "0" + (date.getMonth() + 1)
+          : date.getMonth() + 1) + "-";
+      var D =
+        (date.getDate() < 10 ? "0" + date.getDate() : date.getDate()) + " ";
+      var h = date.getHours() + ":";
+      var m = date.getMinutes() + ":";
+      var s = date.getSeconds();
+      return Y + M + D + h + m + s;
+    }
   }
 };
 </script>
