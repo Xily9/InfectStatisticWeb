@@ -137,5 +137,83 @@
 }
 </style>
 <script>
-
+import ECharts from "vue-echarts";
+import VueDatepickerLocal from "vue-datepicker-local";
+import "echarts/lib/component/tooltip";
+import "echarts/lib/chart/line";
+import "echarts/lib/component/title";
+import logData from "../config/logData";
+export default {
+  components: {
+    "v-chart": ECharts,
+    VueDatepickerLocal
+  },
+  watch: {
+    time: function() {
+      this.analyzeData();
+    }
+  },
+  data() {
+    return {
+      time: new Date(),
+      img: require("../assets/img/u0.png"),
+      type: "infected",
+      title: "累计确诊",
+      number: {
+        currentConfirmedCount: 0,
+        confirmedCount: 0,
+        suspectedCount: 0,
+        curedCount: 0,
+        deadCount: 0
+      }
+    };
+  },
+  methods: {
+    loadData() {
+      this.analyzeData();
+    },
+    back() {
+      this.$router.back();
+    },
+    analyzeData() {
+      if (this.time - new Date(2020, 1, 1) > 0)
+        this.time = new Date(2020, 1, 1);
+      if (new Date(2020, 0, 19) - this.time > 0)
+        this.time = new Date(2020, 0, 19);
+      var Y = this.time.getFullYear();
+      var M =
+        this.time.getMonth() + 1 < 10
+          ? "0" + (this.time.getMonth() + 1)
+          : this.time.getMonth() + 1;
+      var D =
+        this.time.getDate() < 10
+          ? "0" + this.time.getDate()
+          : this.time.getDate();
+      let data = logData["aggregate"][Y + "-" + M + "-" + D];
+      let aggregate = data[this.$route.params.province];
+      let augment = data[this.$route.params.province];
+      if (aggregate != null) {
+        this.number.currentConfirmedCount = aggregate["infected"];
+        this.number.confirmedCount = augment["infected"];
+        this.number.suspectedCount = aggregate["suspect"];
+        this.number.curedCount = aggregate["cure"];
+        this.number.deadCount = aggregate["death"];
+      } else {
+        this.number.currentConfirmedCount = 0;
+        this.number.confirmedCount = 0;
+        this.number.suspectedCount = 0;
+        this.number.curedCount = 0;
+        this.number.deadCount = 0;
+      }
+    }
+  },
+  mounted() {
+    window.onresize = () => {
+      if (this.chart) {
+        this.chart.resize();
+      }
+    };
+    this.loadData();
+  }
+};
 </script>
