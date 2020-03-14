@@ -159,12 +159,11 @@ export default {
         this.time.getDate() < 10
           ? "0" + this.time.getDate()
           : this.time.getDate();
-      let data = logData["aggregate"][Y + "-" + M + "-" + D];
-      let aggregate = data["全国"];
-      let augment = data["全国"];
-      this.number.currentConfirmedCount = aggregate["infected"];
-      this.number.confirmedCount = augment["infected"];
-      this.number.suspectedCount = aggregate["suspect"];
+      let aggregate = logData["aggregate"][Y + "-" + M + "-" + D]["全国"];
+      let augment = logData["augment"][Y + "-" + M + "-" + D]["全国"];
+      this.number.currentConfirmedCount = augment["infected"];
+      this.number.confirmedCount = aggregate["infected"];
+      this.number.suspectedCount = augment["suspect"];
       this.number.curedCount = aggregate["cure"];
       this.number.deadCount = aggregate["death"];
     },
