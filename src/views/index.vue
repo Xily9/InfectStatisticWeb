@@ -33,6 +33,10 @@
         <div class="title">累计死亡</div>
       </div>
     </div>
+    <div class="switch_buttons">
+      <div class="button" :class="!isTotal?'checked':''" @click="change(false)">现有确诊</div>
+      <div class="button" :class="isTotal?'checked':''" @click="change(true)">累计确诊</div>
+    </div>
     <v-chart :options="map" @click="handleClick" class="chart" />
   </div>
 </template>
@@ -96,6 +100,25 @@
 .number_block .increase_block .increase {
   color: #f00;
 }
+.switch_buttons {
+  width: 100%;
+  display: flex;
+  border-radius: 10px;
+  background: #ddd;
+  margin: 16px;
+  flex-direction: row;
+}
+.switch_buttons .button {
+  flex: 1;
+  padding: 12px;
+  border-radius: 10px;
+  font-size: 16px;
+  text-align: center;
+}
+.switch_buttons .checked {
+  background: #efefef;
+  font-weight: bold;
+}
 </style>
 <script>
 import ECharts from "vue-echarts";
@@ -122,6 +145,7 @@ export default {
     },
     loadData() {
       this.analyzeData();
+      this.drawMap();
     },
     analyzeData() {
       if (this.time - new Date(2020, 1, 1) > 0)
@@ -143,11 +167,34 @@ export default {
       this.number.suspectedCount = aggregate["suspect"];
       this.number.curedCount = aggregate["cure"];
       this.number.deadCount = aggregate["death"];
-      let arr=[];
+    },
+    drawMap() {
+      if (this.time - new Date(2020, 1, 1) > 0)
+        this.time = new Date(2020, 1, 1);
+      var Y = this.time.getFullYear();
+      var M =
+        this.time.getMonth() + 1 < 10
+          ? "0" + (this.time.getMonth() + 1)
+          : this.time.getMonth() + 1;
+      var D =
+        this.time.getDate() < 10
+          ? "0" + this.time.getDate()
+          : this.time.getDate();
+      let data;
+      if (this.isTotal) {
+        data = logData["aggregate"][Y + "-" + M + "-" + D];
+      } else {
+        data = logData["augment"][Y + "-" + M + "-" + D];
+      }
+      let arr = [];
       for (var key in data) {
         arr.push({ name: key, value: data[key]["infected"] });
       }
-      this.map.series[0].data=arr;
+      this.map.series[0].data = arr;
+    },
+    change(isTotal) {
+      this.isTotal = isTotal;
+      this.drawMap();
     }
   },
   mounted() {
@@ -161,10 +208,12 @@ export default {
   watch: {
     time: function() {
       this.analyzeData();
+      this.drawMap();
     }
   },
   data() {
     return {
+      isTotal: false,
       time: new Date(),
       img: require("../assets/img/u0.png"),
       calendar: require("../assets/img/calendar.png"),
